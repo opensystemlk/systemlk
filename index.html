@@ -1,0 +1,632 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Welcome to SYSTEM.LK
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+   /* Changed color palette to teal and coral */
+   body {
+     font-family: 'Orbitron', sans-serif;
+     background-color: #004d40; /* Dark Teal */
+     margin: 0;
+     padding: 0;
+     overflow-x: hidden;
+   }
+   /* Scrollbar styling */
+   #mainContent::-webkit-scrollbar {
+     width: 8px;
+   }
+   #mainContent::-webkit-scrollbar-track {
+     background: #00332b; /* Darker Teal */
+   }
+   #mainContent::-webkit-scrollbar-thumb {
+     background-color: #ff6f61; /* Coral */
+     border-radius: 10px;
+   }
+   /* Custom font fallback for nav */
+   nav ul li a {
+     font-family: 'Orbitron', sans-serif;
+   }
+
+   /* Animations */
+   @keyframes glow {
+     0%, 100% {
+       text-shadow:
+         0 0 5px #ff6f61,
+         0 0 10px #ff6f61,
+         0 0 20px #ff6f61,
+         0 0 40px #ff8a75,
+         0 0 80px #ff8a75;
+       color: #ff6f61;
+     }
+     50% {
+       text-shadow:
+         0 0 10px #ff8a75,
+         0 0 20px #ff8a75,
+         0 0 30px #ff8a75,
+         0 0 50px #ff6f61,
+         0 0 100px #ff6f61;
+       color: #ff8a75;
+     }
+   }
+
+   @keyframes pulseGlow {
+     0%, 100% {
+       box-shadow:
+         0 0 10px #ff6f61,
+         0 0 20px #ff6f61,
+         0 0 30px #ff8a75,
+         0 0 40px #ff8a75;
+     }
+     50% {
+       box-shadow:
+         0 0 20px #ff8a75,
+         0 0 30px #ff8a75,
+         0 0 40px #ff6f61,
+         0 0 50px #ff6f61;
+     }
+   }
+
+   /* Apply glow animation to headings */
+   h1, h2, h3 {
+     animation: glow 3s ease-in-out infinite;
+   }
+
+   /* Buttons pulse animation */
+   button#loginTab, button#signupTab, button#logoutBtn, form button[type="submit"] {
+     animation: pulseGlow 3.5s ease-in-out infinite;
+   }
+
+   /* Card hover effect */
+   .card-hover:hover {
+     transform: translateY(-8px) scale(1.05);
+     box-shadow:
+       0 0 15px #ff6f61,
+       0 0 30px #ff8a75,
+       0 0 40px #ff8a75;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+   }
+
+   /* Smooth fade-in for main content */
+   #mainContent.show {
+     animation: fadeIn 0.8s ease forwards;
+   }
+   @keyframes fadeIn {
+     from {opacity: 0;}
+     to {opacity: 1;}
+   }
+
+   /* Nav link underline on hover */
+   nav ul li a {
+     position: relative;
+     transition: color 0.3s ease;
+     color: #b2dfdb; /* Light Teal */
+   }
+   nav ul li a::after {
+     content: '';
+     position: absolute;
+     width: 0;
+     height: 2px;
+     bottom: -3px;
+     left: 0;
+     background-color: #ff6f61; /* Coral */
+     transition: width 0.3s ease;
+   }
+   nav ul li a:hover {
+     color: #ff6f61; /* Coral */
+   }
+   nav ul li a:hover::after {
+     width: 100%;
+   }
+
+   /* Responsive adjustments */
+   @media (max-width: 640px) {
+     nav ul {
+       justify-content: center;
+       flex-wrap: wrap;
+     }
+     nav ul li {
+       margin-bottom: 0.5rem;
+     }
+   }
+
+   /* Form input focus */
+   input:focus {
+     border-color: #ff6f61 !important;
+     box-shadow: 0 0 8px #ff6f61 !important;
+   }
+
+   /* Background and text colors for cards and sections */
+   .bg-primary {
+     background-color: #00332b; /* Darker Teal */
+   }
+   .text-primary {
+     color: #b2dfdb; /* Light Teal */
+   }
+   .text-accent {
+     color: #ff6f61; /* Coral */
+   }
+   .btn-primary {
+     background-color: #ff6f61;
+     color: #00332b;
+   }
+   .btn-primary:hover {
+     background-color: #ff8a75;
+     color: #00221a;
+   }
+
+   /* Social icons container */
+   #socialIcons {
+     display: flex;
+     justify-content: center;
+     gap: 1.5rem;
+     margin-bottom: 1.5rem;
+   }
+   #socialIcons a {
+     color: #ff6f61;
+     font-size: 1.8rem;
+     transition: color 0.3s ease, transform 0.3s ease;
+   }
+   #socialIcons a:hover,
+   #socialIcons a:focus {
+     color: #ff8a75;
+     transform: scale(1.2);
+     outline: none;
+   }
+  </style>
+ </head>
+ <body class="min-h-screen bg-[#004d40]">
+  <!-- Login/Signup Container -->
+  <div class="min-h-screen flex flex-col items-center justify-center px-4" id="authContainer">
+   <div class="w-full max-w-md bg-primary rounded-lg p-8 shadow-lg shadow-black/70 animate-fadeIn">
+    <h1 class="text-accent text-3xl font-extrabold mb-6 text-center select-none">
+     SYSTEM.LK
+    </h1>
+    <!-- Social Icons -->
+    <div id="socialIcons" aria-label="Social media links">
+     <a href="https://www.facebook.com/system.lkr" target="_blank" rel="noopener" aria-label="Facebook" tabindex="0"><i class="fab fa-facebook-f"></i></a>
+     <a href="https://www.youtube.com/@systemlkr" target="_blank" rel="noopener" aria-label="YouTube" tabindex="0"><i class="fab fa-youtube"></i></a>
+     <a href="https://www.tiktok.com/@system.lk" target="_blank" rel="noopener" aria-label="TikTok" tabindex="0"><i class="fab fa-tiktok"></i></a>
+     <a href="https://www.instagram.com/system.lk" target="_blank" rel="noopener" aria-label="Instagram" tabindex="0"><i class="fab fa-instagram"></i></a>
+     <a href="https://www.threads.com/system.lk" target="_blank" rel="noopener" aria-label="Threads" tabindex="0" style="font-weight:900; font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: #ff6f61; transition: color 0.3s ease, transform 0.3s ease;">T</a>
+    </div>
+    <div class="flex justify-center mb-6 space-x-4">
+     <button class="px-6 py-2 rounded-full btn-primary font-extrabold shadow-[0_0_15px_5px_#ff6f61] hover:shadow-[0_0_20px_8px_#ff6f61] transition-shadow duration-300 focus:outline-none animate-pulseGlow" id="loginTab" type="button">
+      Login
+     </button>
+     <button class="px-6 py-2 rounded-full bg-transparent border border-accent text-accent font-extrabold hover:bg-accent hover:text-primary transition-colors duration-300 focus:outline-none animate-pulseGlow" id="signupTab" type="button">
+      Signup
+     </button>
+    </div>
+    <form class="space-y-5 text-primary" id="authForm" novalidate="">
+     <div>
+      <label class="block mb-1 font-semibold" for="username">
+       Username
+      </label>
+      <input class="w-full rounded px-3 py-2 bg-[#004d40] border border-accent focus:outline-none focus:ring-2 focus:ring-accent transition duration-300" id="username" name="username" placeholder="Enter your username" required="" type="text"/>
+     </div>
+     <div>
+      <label class="block mb-1 font-semibold" for="password">
+       Password
+      </label>
+      <input class="w-full rounded px-3 py-2 bg-[#004d40] border border-accent focus:outline-none focus:ring-2 focus:ring-accent transition duration-300" id="password" minlength="6" name="password" placeholder="Enter your password" required="" type="password"/>
+     </div>
+     <div class="hidden" id="confirmPasswordDiv">
+      <label class="block mb-1 font-semibold" for="confirmPassword">
+       Confirm Password
+      </label>
+      <input class="w-full rounded px-3 py-2 bg-[#004d40] border border-accent focus:outline-none focus:ring-2 focus:ring-accent transition duration-300" id="confirmPassword" minlength="6" name="confirmPassword" placeholder="Re-enter your password" type="password"/>
+     </div>
+     <button class="w-full btn-primary font-extrabold py-3 rounded shadow-[0_0_15px_5px_#ff6f61] hover:shadow-[0_0_20px_8px_#ff6f61] transition-shadow duration-300 animate-pulseGlow" type="submit">
+      Login
+     </button>
+    </form>
+   </div>
+  </div>
+  <!-- Main Site Content (hidden initially) -->
+  <div class="hidden min-h-screen p-6 text-primary font-nav bg-gradient-to-r from-[#004d40] via-[#00332b] to-[#004d40] overflow-auto" id="mainContent" tabindex="0" aria-label="Main content">
+   <nav class="flex flex-col sm:flex-row items-center justify-between px-4 py-2 rounded-xl max-w-full max-h-14 bg-gradient-to-r from-[#004d40] via-[#00332b] to-[#004d40] shadow-inner shadow-black/80 mb-6 gap-4 sm:gap-0" role="navigation" aria-label="Primary navigation">
+    <div class="flex items-center space-x-1 select-none" aria-label="Logo">
+     <span class="text-[#ff6f61] italic font-['Roboto_Condensed'] text-3xl leading-none">
+      S
+     </span>
+     <span class="text-primary font-['Roboto_Condensed'] text-3xl leading-none">
+      YSTEM.
+     </span>
+     <span class="text-primary font-['Orbitron'] font-extrabold text-3xl leading-none tracking-tight">
+      LK
+     </span>
+    </div>
+    <ul class="flex flex-wrap items-center justify-center space-x-4 sm:space-x-6 font-extrabold text-xs tracking-wide" role="menubar">
+     <li role="none">
+      <a class="hover:text-accent" href="#soul-ai" role="menuitem" tabindex="0">
+       SOUL AI      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#research" role="menuitem" tabindex="0">
+       RESEARCH      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#product" role="menuitem" tabindex="0">
+       PRODUCT      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#core-knowledge" role="menuitem" tabindex="0">
+       CORE-KNOWLEDGE      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#safety" role="menuitem" tabindex="0">
+       SAFETY      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#company" role="menuitem" tabindex="0">
+       COMPANY      </a>     </li>
+     <li role="none">
+      <a class="hover:text-accent" href="#price" role="menuitem" tabindex="0">
+       PRICE      </a>     </li>
+    </ul>
+    <button aria-label="Logout" class="text-[#00332b] font-extrabold text-xs px-4 py-1 rounded-full btn-primary shadow-[0_0_15px_5px_#ff6f61] hover:shadow-[0_0_20px_8px_#ff6f61] transition-shadow duration-300 select-none whitespace-nowrap animate-pulseGlow" id="logoutBtn" type="button">
+     LOGOUT
+    </button>
+   </nav>
+   <main class="max-w-7xl mx-auto" role="main">
+    <div class="bg-primary rounded-lg p-6 shadow-lg shadow-black/70 mb-12 animate-glow">
+     <h2 class="text-accent text-3xl font-extrabold mb-4 text-center select-none">
+      Welcome to SYSTEM.LK
+     </h2>
+    </div>
+    <!-- Home Section -->
+    <section class="mb-16 flex justify-center" id="home" tabindex="-1" aria-label="Home section">
+     <img alt="Futuristic AI system interface with neon teal and coral lights, holographic displays, and digital data streams" class="rounded-lg shadow-lg shadow-black/80 w-[320px] h-[400px] sm:w-[400px] sm:h-[500px] md:w-[480px] md:h-[600px] object-cover animate-glow" height="600" loading="lazy" src="https://storage.googleapis.com/a1aa/image/89dfef43-6f09-4de4-3c82-76e46d87282a.jpg" width="480"/>
+    </section>
+    <!-- Soul AI Section -->
+    <section class="mb-16 px-4 sm:px-0" id="soul-ai" tabindex="-1" aria-label="Soul AI section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      SOUL AI
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Discover the cutting-edge Soul AI technology that powers our intelligent systems, enabling seamless interaction and adaptive learning.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Digital interface showing adaptive learning AI algorithms with dynamic graphs and user interaction data in teal and coral hues" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/9f7b7f0e-8ae1-41a4-64af-93b759efafe6.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Adaptive Learning
+       </h3>
+       <p class="text-primary flex-grow">
+        Our AI continuously learns from user interactions to improve performance and personalization.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Conceptual image of natural language processing with speech bubbles and AI brain icon connected by neural network lines in teal and coral tones" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/6e77e93c-1fb5-4c1a-2606-af58ea958c92.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Natural Language Processing
+       </h3>
+       <p class="text-primary flex-grow">
+        Communicate naturally with our AI using advanced language understanding and generation.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="AI system detecting user emotions with facial expression analysis and colorful emotion icons in neon teal and coral" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/a3fa72c6-1df9-48b5-6be9-968ba6461a5b.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Emotion Recognition
+       </h3>
+       <p class="text-primary flex-grow">
+        Soul AI detects and responds to emotional cues to enhance user experience.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Research Section -->
+    <section class="mb-16 px-4 sm:px-0" id="research" tabindex="-1" aria-label="Research section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      RESEARCH
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Our dedicated research team pushes the boundaries of AI and robotics to create innovative solutions for tomorrow.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Robotics innovation lab with engineers working on advanced robots and robotic arms with teal and coral lighting" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/c832cb17-ef5d-4416-b156-a8353204cda0.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Robotics Innovation
+       </h3>
+       <p class="text-primary flex-grow">
+        Developing next-gen robots with enhanced mobility, dexterity, and intelligence.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Group of diverse professionals discussing AI ethics and safety in a modern conference room with teal and coral ambient lighting" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/6c6d2203-524b-421f-8e7a-be8c3da6046e.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        AI Ethics
+       </h3>
+       <p class="text-primary flex-grow">
+        Ensuring responsible AI development with a focus on safety and fairness.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="User interacting with a futuristic human-machine interface with holographic controls in teal and coral neon" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/32b2ca16-ab3a-4075-430d-1d148fd31734.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Human-Machine Interaction
+       </h3>
+       <p class="text-primary flex-grow">
+        Creating intuitive interfaces for seamless collaboration between humans and machines.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Product Section -->
+    <section class="mb-16 px-4 sm:px-0" id="product" tabindex="-1" aria-label="Product section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      PRODUCT
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Explore our range of advanced AI-powered products designed to transform industries and everyday life.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="AI assistant application displayed on a modern smartphone with voice command interface in teal and coral neon colors" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/22d42333-e8d8-4bb5-3169-96516b469115.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        AI Assistant
+       </h3>
+       <p class="text-primary flex-grow">
+        A smart assistant that helps you manage tasks, schedule, and more with ease.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Robotic companion robot interacting with a family in a modern home environment with teal and coral lighting" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/a2be7775-d424-49d0-e75f-3ead7c3b79a7.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Robotic Companion
+       </h3>
+       <p class="text-primary flex-grow">
+        A versatile robot designed for companionship, assistance, and security.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Enterprise AI solutions dashboard showing analytics and business intelligence data with teal and coral neon highlights" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/591dce10-6c6e-4a8b-a444-fd72c9e6d7a3.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Enterprise Solutions
+       </h3>
+       <p class="text-primary flex-grow">
+        Custom AI solutions tailored to optimize business operations and analytics.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Core Knowledge Section -->
+    <section class="mb-16 px-4 sm:px-0" id="core-knowledge" tabindex="-1" aria-label="Core Knowledge section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      CORE-KNOWLEDGE
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Our core knowledge base integrates vast data and insights to empower AI decision-making and innovation.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Data integration systems with interconnected databases and data streams in teal and coral neon style" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/231b37c0-04b3-4fe9-434b-6dbe66b671d3.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Data Integration
+       </h3>
+       <p class="text-primary flex-grow">
+        Aggregating diverse data sources for comprehensive AI understanding.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Visualization of knowledge graphs with nodes and connections representing information structure in neon teal and coral" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/4fcdeafc-7434-4b69-10e5-7d1fe337807c.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Knowledge Graphs
+       </h3>
+       <p class="text-primary flex-grow">
+        Structuring information to enable efficient AI reasoning and learning.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Real-time data updates dashboard showing live analytics and research insights with teal and coral neon highlights" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/23a3a409-ac9f-4381-5188-3cac22051555.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Continuous Updates
+       </h3>
+       <p class="text-primary flex-grow">
+        Keeping AI knowledge current with real-time data and research insights.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Safety Section -->
+    <section class="mb-16 px-4 sm:px-0" id="safety" tabindex="-1" aria-label="Safety section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      SAFETY
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Safety is our top priority. We implement rigorous protocols to ensure our AI and robotics operate securely and ethically.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Fail-safe systems control panel with emergency stop buttons and safety indicators in teal and coral neon style" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/e80fbff9-86cc-40a9-f24f-a2ff9b36391a.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Fail-Safe Systems
+       </h3>
+       <p class="text-primary flex-grow">
+        Multiple layers of safety mechanisms to prevent malfunctions and hazards.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Security shield icon representing privacy protection and data security in teal and coral neon colors" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/e2acbfb8-8ca0-415f-fc96-7ed10d56bda2.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Privacy Protection
+       </h3>
+       <p class="text-primary flex-grow">
+        Ensuring user data is handled with the highest standards of security and confidentiality.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Team meeting discussing ethical AI guidelines and societal impact with teal and coral neon lighting" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/bd0c6d0f-2abd-48fd-08f6-0f7241cfcab7.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Ethical AI
+       </h3>
+       <p class="text-primary flex-grow">
+        Commitment to developing AI that respects human rights and societal norms.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Company Section -->
+    <section class="mb-16 px-4 sm:px-0" id="company" tabindex="-1" aria-label="Company section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      COMPANY
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      System.lk is a leader in AI and robotics innovation, dedicated to shaping the future with cutting-edge technology.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Abstract image representing company mission and vision with futuristic cityscape in teal and coral neon colors" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/563f52fe-7981-4839-7e13-4c329ea1daed.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Our Mission
+       </h3>
+       <p class="text-primary flex-grow">
+        To create intelligent systems that enhance human potential and quality of life.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Diverse team of AI and robotics experts collaborating in a modern office with teal and coral neon lighting" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/4937f235-a277-4abf-7d23-9d0eac0042ff.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Our Team
+       </h3>
+       <p class="text-primary flex-grow">
+        A diverse group of experts in AI, robotics, design, and ethics.
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Career opportunities in AI and robotics with professionals working on futuristic projects with teal and coral neon highlights" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/77180edb-d096-4cbf-2d39-b12a976dc94b.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Careers
+       </h3>
+       <p class="text-primary flex-grow">
+        Join us to be part of the AI revolution and make a real impact.
+       </p>
+      </article>
+     </div>
+    </section>
+    <!-- Price Section -->
+    <section class="mb-16 px-4 sm:px-0" id="price" tabindex="-1" aria-label="Price section">
+     <h2 class="text-accent text-4xl font-extrabold mb-4 animate-glow">
+      PRICE
+     </h2>
+     <p class="mb-8 max-w-3xl text-primary">
+      Flexible pricing plans designed to fit your needs, whether you're an individual or enterprise.
+     </p>
+     <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Icon representing basic pricing plan with simple features in teal and coral neon style" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/9c782985-000d-4315-0dcf-d4bf384016e0.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Basic
+       </h3>
+       <p class="text-primary flex-grow">
+        Access to core features with limited usage - $19/month
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Icon representing pro pricing plan with advanced features and priority support in teal and coral neon colors" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/5d2f73fa-36c5-4416-ace6-2c6ddd2f2673.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Pro
+       </h3>
+       <p class="text-primary flex-grow">
+        Full feature access with priority support - $49/month
+       </p>
+      </article>
+      <article class="bg-[#00332b] rounded-lg p-6 shadow-lg shadow-black/70 flex flex-col card-hover animate-glow" tabindex="0">
+       <img alt="Icon representing enterprise pricing plan with custom solutions and dedicated support in teal and coral neon style" class="rounded-lg mb-4 w-full object-cover" height="200" loading="lazy" src="https://storage.googleapis.com/a1aa/image/f71accb6-7430-429b-b5a3-caf1fcca08cf.jpg" width="400"/>
+       <h3 class="text-accent text-xl font-bold mb-2">
+        Enterprise
+       </h3>
+       <p class="text-primary flex-grow">
+        Custom solutions and dedicated support - Contact us
+       </p>
+      </article>
+     </div>
+    </section>
+   </main>
+  </div>
+  <script>
+   const loginTab = document.getElementById('loginTab');
+   const signupTab = document.getElementById('signupTab');
+   const confirmPasswordDiv = document.getElementById('confirmPasswordDiv');
+   const authForm = document.getElementById('authForm');
+   const submitBtn = authForm.querySelector('button[type="submit"]');
+   const confirmPasswordInput = document.getElementById('confirmPassword');
+   const authContainer = document.getElementById('authContainer');
+   const mainContent = document.getElementById('mainContent');
+   const logoutBtn = document.getElementById('logoutBtn');
+
+   let isLogin = true;
+
+   function switchToLogin() {
+     isLogin = true;
+     loginTab.classList.add('btn-primary', 'text-[#00332b]', 'shadow-[0_0_15px_5px_#ff6f61]');
+     loginTab.classList.remove('bg-transparent', 'border', 'border-accent', 'text-accent', 'hover:bg-accent', 'hover:text-primary');
+     signupTab.classList.remove('btn-primary', 'text-[#00332b]', 'shadow-[0_0_15px_5px_#ff6f61]');
+     signupTab.classList.add('bg-transparent', 'border', 'border-accent', 'text-accent', 'hover:bg-accent', 'hover:text-primary');
+     confirmPasswordDiv.classList.add('hidden');
+     confirmPasswordInput.required = false;
+     submitBtn.textContent = 'Login';
+     authForm.reset();
+   }
+
+   function switchToSignup() {
+     isLogin = false;
+     signupTab.classList.add('btn-primary', 'text-[#00332b]', 'shadow-[0_0_15px_5px_#ff6f61]');
+     signupTab.classList.remove('bg-transparent', 'border', 'border-accent', 'text-accent', 'hover:bg-accent', 'hover:text-primary');
+     loginTab.classList.remove('btn-primary', 'text-[#00332b]', 'shadow-[0_0_15px_5px_#ff6f61]');
+     loginTab.classList.add('bg-transparent', 'border', 'border-accent', 'text-accent', 'hover:bg-accent', 'hover:text-primary');
+     confirmPasswordDiv.classList.remove('hidden');
+     confirmPasswordInput.required = true;
+     submitBtn.textContent = 'Signup';
+     authForm.reset();
+   }
+
+   loginTab.addEventListener('click', switchToLogin);
+   signupTab.addEventListener('click', switchToSignup);
+
+   authForm.addEventListener('submit', (e) => {
+     e.preventDefault();
+     const username = authForm.username.value.trim();
+     const password = authForm.password.value;
+     const confirmPassword = authForm.confirmPassword.value;
+
+     if (!username) {
+       alert('Please enter your username.');
+       return;
+     }
+     if (!password || password.length < 6) {
+       alert('Password must be at least 6 characters.');
+       return;
+     }
+     if (!isLogin) {
+       if (password !== confirmPassword) {
+         alert('Passwords do not match.');
+         return;
+       }
+       alert(`Signup successful for ${username}`);
+       switchToLogin();
+     } else {
+       alert(`Login successful for ${username}`);
+       authContainer.classList.add('hidden');
+       mainContent.classList.remove('hidden');
+       mainContent.classList.add('show');
+       mainContent.focus();
+     }
+     authForm.reset();
+   });
+
+   logoutBtn.addEventListener('click', () => {
+     mainContent.classList.add('hidden');
+     authContainer.classList.remove('hidden');
+     switchToLogin();
+   });
+
+   switchToLogin();
+  </script>
+ </body>
+</html>
